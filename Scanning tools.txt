@@ -1,0 +1,140 @@
+1. Network Mapper (Nmap)
+
+Popular tool used to carry out port scanning, discover network protocols, identify running services, and detect operating systems on live hosts. 
+
+Nmap Scan Types
+	TCP SCAN: -checks and completes a three-way handshake with Target System.
+		  -generally very noisy and can be detected with almost little to no effort because the services can log the sender IP address 
+		   and might trigger Intrusion Detection Systems.
+	UDP SCAN: -checks whether there is any UDP port up and listening for incoming requests on the target machine.
+		  -there is always a chance for a false positive in the scan results due to lack of acknowledgement.
+		  -this scan reveals Trojan horses that might be running on UDP ports or even reveal hidden RPC services.
+		  -tends to be quite slow
+	SYN SCAN: -another form of TCP scan. 
+		  -nmap itself crafts a syn packet, which is the first packet that is sent to establish a TCP connection.
+		  -connection is never formed, rather the responses to these specially crafted packets are analyzed by Nmap to produce scan results.
+	ACK SCAN: -determines whether a particular port is filtered or not.
+		  -proves to be extremely helpful when trying to probe for firewalls and their existing set of rules.
+		  -Simple packet filtering will allow established connections (packets with the ACK bit set), whereas a more sophisticated stateful 
+		   firewall might not.
+	FIN SCAN: -stealthy scan, like the SYN scan, but sends a TCP FIN packet instead.
+		  -can show false positives and negatives because not all computers will send an RST packet (reset packet) back.
+		  -might get under the radar of some IDS programs.
+	NULL SCAN:-extremely stealthy scan
+		  -sets all the header fields to null.
+		  -when a system is not running windows this can be used as an effective way to get through.
+	XMAS SCAN:-extremely stealthy scan
+		  -Computers running windows will not respond to Xmas scans due to the way their TCP stack is implemented.
+		  -used to manipulate the PSH, URG and FIN flags that can be found in the TCP header.
+	RPC SCAN: -discover machines that responds to Remote Procedure Call services (RPC).
+		  -allows commands to be run on a certain machine remotely, under a certain set of connections.
+		  -it becomes hard to infer from a normal scan whether RPC services are running or not.
+	IDLE SCAN:-stealthiest of all scans
+		  -packets are bounced off an external host.
+		  -mostly used for malicious attacks.
+
+COMMANDS
+
+Scanning Techniques:
+-sS	TCP SYN Port scan
+	nmap -sS 192.168.1.1
+-sT	TCP Connect Port scan
+	nmap -sT 192.168.1.1
+-sA	TCP ACK Port scan
+	nmap –sA 192.168.1.1
+-sU 	UDP Port scan
+	nmap –sU 192.168.1.1
+-sI	Idle Scan
+	nmap -sI 192.168.1.1
+-b	FTP Bounce Scan
+	nmap –b 192.168.1.1
+
+HOST Discovery:
+-Pn	Only port scan 
+	nmap -Pn 192.168.1.1
+-sn 	Only host discover/Ping scan
+	nmap -sn 192.168.1.1
+-PR	ARP discovery on a Local Network
+	nmap -PR 192.168.1.1
+-n	Disable DNS Resolution
+	nmap -n 192.168.1.1
+
+
+PORT Specification
+-p	specify a port or port range	
+	nmap -p 1-30 192.168.1.1
+	nmap -p 80 192.168.1.1
+-p-	scan all ports	
+	nmap -p- 192.168.1.1
+-F	fast port scan	
+	nmap -F 192.168.1.1
+-r	Scan ports consecutively
+	nmap -r 192.168.1.1
+
+SERVICE Version and OS Detection
+-sV	detect the version of services running	
+	nmap -sV 192.168.1.1
+-A	aggressive scan	
+	nmap -A 192.168.1.1
+-O	detect operating system of the target	
+	nmap -O 192.168.1.1
+
+Timing and Performance
+	nmap -T0 192.168.1.1
+-T0	paranoid IDS evasion	
+-T1	sneaky IDS evasion	
+-T2	polite IDS evasion	
+-T3	normal IDS evasion	
+-T4	aggressive speed scan	
+-T5	insane speed scan	
+
+
+NSE Scripts
+-sC		default script scan	
+		nmap -sC 192.168.1.1
+-script banner	banner grabbing	
+		nmap –script banner 192.168.1.1
+
+FIREWALL/IDS Evasion and SPOOFING
+-f	use fragmented IP packets	
+	nmap -f 192.168.1.1
+-D	decoy scans	
+	nmap -D 192.168.1.1
+-g	use a given source port number	
+	nmap -g 22 192.168.1.1
+-S	Spoof source address
+	nmap -S 192.168.0.100 10.10.2.25
+
+
+
+
+2. NIKTO
+
+Nikto is open-source software that allows scanning websites for vulnerabilities. It enables looking for subdomains, outdated servers, debug 
+messages etc. on a website. 
+
+Nikto is an open-source scanner and you can use it with any web servers (Apache, Nginx, IHS, OHS, Litespeed, etc.). Sounds like a perfect in-house 
+tool for web server scanning. It is capable of scanning for over 6700 items to detect misconfiguration, risky files, etc. and some of the features 
+include:
+	save the report in HTML, XML, CSV
+	supports SSL
+	Scan multiple ports on the server
+	Find Subdomain
+	Apache user enumeration
+	Checks for outdated components
+	Detect parking sites
+
+COMMANDS:
+
+To specify Host to Scan
+	$ nikto –h $webserverurl
+	$ nikto -h <IP Address>
+	
+To specify an SSL website
+	$ nikto -h linuxhint.com -ssl
+
+
+
+
+
+		  
