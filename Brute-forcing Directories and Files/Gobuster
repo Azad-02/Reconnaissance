@@ -1,0 +1,238 @@
+GOBUSTER : 
+
+Gobuster is used for enumerating hidden directories and files on Web Application. It can often yield valuable information that makes it easier to execute a particular attack, leaving less room for errors and wasting time.
+
+Gobuster is written in Go language and is comparatively faster and efficient than other directory brut-force tools like DirBuster and DIRB.
+
+One drawback of Gobuster, is the lack of recursive directory exploration. For directories, quite one level deep, another scan is going to be needed, unfortunately. Often, this is not a big deal, and other scanners can Intensify and fill in the gaps for Gobuster in this area.
+
+
+
+INSTALLATION in LINUX : 
+
+Make a separate directory to make it Clean.
+	
+	> mkdir gobuster && cd gobuster
+
+Install gobuster from Kali Repository.
+
+	> sudo apt install gobuster
+
+Install additional seclists for Brute-forcing Directories and files.
+
+	> sudo apt install seclists
+
+
+
+SYNTAX :
+
+> gobuster [Mode] [Option]
+
+
+
+MODES IN GOBUSTER :
+
+Specifying Mode in gobuster is mandatory.
+
+1. dir: Directory brute-forcing mode
+	The classic Directory Brute-Forcing mode or Enumerating URIs(Uniform Resource Identifiers) for directories and files.	
+	The Dir mode in Gobuster is mainly used to find extra content in a specific target domain or its subdomain i.e. hidden directories or hidden files that can contain sensitive data.
+       
+	Options used in dir mode:
+        "-u" : to specify target domain or subdomain
+        "-w" : to specify wordlist you wish to use in brute-forcing
+
+2. dns: DNS subdomain brute-forcing mode or Enumerating Subdomains
+	It is used to enumerate subdomains in the target domain.
+	We can find some hidden or unidentifiable subdomains for a given target domain.
+	
+	Options used in dns mode:
+	 “-d” : to specify the target domain 
+        "-w" : to specify wordlist you wish to use in brute-forcing
+
+3. vhost – Virtual Host brute-forcing mode or enumerating virtual hosts (not the same as DNS!)
+	It is used to find the virtual hosts on the victim server.
+	Virtual Hosting is done when companies host several domain names on a single server or cluster of the server. 
+	Virtual Hosting allows one server to share its data and resources with several other hostnames. 
+	Identifying hostnames on a server can disclose additional web content belonging to a company. 
+	In host mode, it checks if the subdomains exist by actually visiting the formed URL and cross checking the IP address.
+
+
+
+Options common for all Modes :
+
+1. -o, --output string	: Output file to write results to (defaults to stdout)
+
+2. -q, --quiet		: Don’t print the banner and other noise
+
+3. -t, --threads int	: Number of concurrent threads (default 10)
+
+4. -v, --verbose	: Verbose output (errors)
+
+5. -z, --no-progress	: Don't display progress
+
+
+
+
+TARGET SPECIFICATION :
+
+Examples -
+
+1. gobuster dir -u https://www.domainname.org/
+2. gobuster dir -u https://www.domain.com
+3. gobuster dir -u 192.168.21.154
+
+
+
+WORDLISTS SPECIFICATIONS :
+
+Examples - 
+
+1. gobuster dir -u https://www.domainname.org/ -w /usr/share/wordlists/big.txt
+2. gobuster dir -u https://www.domainname.org/ -w /usr/share/wordlists/small.txt
+
+
+
+ENUMERATING FILES :
+
+option "-x" is used to enumerate through specific file extensions.
+
+Examples - 
+
+1. gobuster dir -u https://www.domainname.com w /usr/share/wordlists/big.txt -x php,html,xhtml
+
+
+
+
+
+
+*********************************************************************************************************************************************************
+
+
+
+
+
+USAGE :
+
+1. Obtaining Full Path for a Directory or File
+	-e is used to print complete URL of hidden directories.
+	
+Example - 
+	> gobuster dir -e -u domain.com -w /usr/share/wordlists/dirb/common.txt 
+
+
+2. Hide Status Code
+	-n 'no status' option prints the results without status code.
+
+Example - 
+	> gobuster dir -u domain.com -w /usr/share/wordlists/dirb/common.txt -n
+
+
+3. Disable Banner
+	-q option disables the flag to hide extra data
+	
+Example - 
+	> gobuster dir  -u domain.com -w /usr/share/wordlists/dirb/common.txt -q
+
+
+4. Set Threads Number
+	-t option enables the number of thread parameters to be implemented while brute-forcing sub-domain names or directories.
+
+Example - 
+	> gobuster dns -d domain.com -t 100 -w /usr/share/wordlists/dirb/common.txt
+	> gobuster dir -u domain.com -t 100 -w /usr/share/wordlists/dirb/common.txt
+
+
+5. Obtain Sub Domain IPs
+	-i option allows the IP parameter which shows the IPs of selected sub-domains
+	
+Example - 
+	> gobuster  dns -d domain.com -t 100 -w /usr/share/wordlists/dirb/common.txt -i
+
+
+6. Timeout
+	--timeout option followed by time in seconds allows the timeout parameter for HTTP requests
+	5 seconds is the default time limit for the HTTP request
+	
+Example - 
+	> gobuster dir –timeout 4s -u domain.com -t 100 -w /usr/share/wordlists/dirb/common.txt
+
+7. Appending Forward Slash
+	-f option appends the forward-slash after every enumerated URl
+
+Example - 
+	> gobuster dir -u domain.com -w /usr/share/wordlists/dirb/common.txt -f –wildcard
+
+
+8. Enumerating Directory with Specific Extension List
+	-x option enumerates through specific file extensions.
+
+Example - 
+	> gobuster dir -u domain.com -w /usr/share/wordlists/dirb/common.txt -x php,html
+
+
+9. Follow Redirect
+	-r options allows redirecting the parameters, redirecting HTTP requests to another, and changing the Status code for a directory or file.
+
+Example - 
+	> gobuster dir -u domain.com -r -w /usr/share/wordlists/dirb/common.txt -q
+
+
+10. HTTP AUTHORIZATION (-u username: password)
+	HTTP Authentication/Authorization mechanisms are all based on the use of 401-status code and WWW-Authenticate response header. The most generally used HTTP authentication mechanisms are Primary. The client sends the username and password un-encrypted base64 encoded data.
+	To avoid this kind of authentication with the help of Gobuster, we have use -U and -P options
+
+Examples - 
+	> gobuster dir -u http://testphp.vulnweb.com/login.php -w /usr/share/wordlists/dirb/common.txt -U test -P test
+
+
+11. Force Processing Brute Force
+	--wildcard option allsow parameters to continue the attack even if there is any Wildcard Domain.
+	Since, attack ends by obtaining the sub-domain name if it meets any Wildcard DNS, which is a non-existing domain, we use --wildcard option.
+
+Examples - 
+	> gobuster dir -u domain.com -w /usr/share/wordlists/dirb/common.txt  --wildcard
+
+
+12. Hide Process of Extracting
+	-z option covers the process of obtaining sub-domains names while making brute force attacks.
+
+Example - 
+	> gobuster dns -d domain.org -t 100 -w /usr/share/wordlists/dirb/common.txt -z
+
+
+13. Extracting CNAME Records
+	–c option enables the CNAME Records parameter of the obtained sub-domains and their CNAME records.
+
+Examples -
+	> gobuster dns -d geeksforgeeks.org -t 100 -w /usr/share/wordlists/dirb/common.txt -c
+
+
+14. Proxy URL
+	–p option allows proxy URL to be used for all requests; by default, it works on port 1080.
+	
+Example -
+	> gobuster dir -p ‘https://18.172.30:3128’ -u ‘http://18.192.172.30/’ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
