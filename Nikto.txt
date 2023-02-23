@@ -1,0 +1,33 @@
+1. NIKTO
+
+
+
+Nikto is open-source software that allows scanning websites for vulnerabilities. It enables looking for subdomains, outdated servers, debug 
+messages etc. on a website. 
+
+Nikto is an open-source scanner and you can use it with any web servers (Apache, Nginx, IHS, OHS, Litespeed, etc.). Sounds like a perfect in-house 
+tool for web server scanning. It is capable of scanning for over 6700 items to detect misconfiguration, risky files, etc. and some of the features 
+include:
+	save the report in HTML, XML, CSV
+	supports SSL
+	Scan multiple ports on the server
+	Find Subdomain
+	Apache user enumeration
+	Checks for outdated components
+	Detect parking sites
+
+
+COMMANDS:
+
+To specify Host to Scan
+	$ nikto –h $webserverurl
+	$ nikto -h <IP Address>
+	
+To specify an SSL website
+	$ nikto -h linuxhint.com -ssl
+
+
+
+
+
+		  
