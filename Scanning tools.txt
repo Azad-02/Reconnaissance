@@ -108,6 +108,25 @@ FIREWALL/IDS Evasion and SPOOFING
 
 
 
+COMMON EXAMPLES OF NMAP
+
+- For scanning a web application:
+	> sudo nmap -sVC -p- -T4 --open -O <IP Address> -oN <filename>
+	
+	-sVC : Version scan + Script scan
+	-p-  : Scan all ports
+	-T4  : Aggressive speed scan for Quick results
+	-O   : Detect OS
+	-oN  : Normal output format into specified file
+
+
+
+
+
+
+
+
+
 2. NIKTO
 
 Nikto is open-source software that allows scanning websites for vulnerabilities. It enables looking for subdomains, outdated servers, debug 
