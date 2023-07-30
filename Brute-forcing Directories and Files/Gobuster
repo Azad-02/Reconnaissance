@@ -1,10 +1,12 @@
 GOBUSTER : 
 
-Gobuster is used for enumerating hidden directories and files on Web Application. It can often yield valuable information that makes it easier to execute a particular attack, leaving less room for errors and wasting time.
+Gobuster is used for enumerating hidden directories and files on Web Application. It can often yield valuable information that makes it easier to 
+execute a particular attack, leaving less room for errors and wasting time.
 
 Gobuster is written in Go language and is comparatively faster and efficient than other directory brut-force tools like DirBuster and DIRB.
 
-One drawback of Gobuster, is the lack of recursive directory exploration. For directories, quite one level deep, another scan is going to be needed, unfortunately. Often, this is not a big deal, and other scanners can Intensify and fill in the gaps for Gobuster in this area.
+One drawback of Gobuster, is the lack of recursive directory exploration. For directories, quite one level deep, another scan is going to be needed, 
+unfortunately. Often, this is not a big deal, and other scanners can Intensify and fill in the gaps for Gobuster in this area.
 
 
 
@@ -36,7 +38,8 @@ Specifying Mode in gobuster is mandatory.
 
 1. dir: Directory brute-forcing mode
 	The classic Directory Brute-Forcing mode or Enumerating URIs(Uniform Resource Identifiers) for directories and files.	
-	The Dir mode in Gobuster is mainly used to find extra content in a specific target domain or its subdomain i.e. hidden directories or hidden files that can contain sensitive data.
+	The Dir mode in Gobuster is mainly used to find extra content in a specific target domain or its subdomain i.e. hidden directories or hidden 
+	files that can contain sensitive data.
        
 	Options used in dir mode:
         "-u" : to specify target domain or subdomain
@@ -179,7 +182,8 @@ Example -
 
 
 10. HTTP AUTHORIZATION (-u username: password)
-	HTTP Authentication/Authorization mechanisms are all based on the use of 401-status code and WWW-Authenticate response header. The most generally used HTTP authentication mechanisms are Primary. The client sends the username and password un-encrypted base64 encoded data.
+	HTTP Authentication/Authorization mechanisms are all based on the use of 401-status code and WWW-Authenticate response header. The most generally 
+	used HTTP authentication mechanisms are Primary. The client sends the username and password un-encrypted base64 encoded data.
 	To avoid this kind of authentication with the help of Gobuster, we have use -U and -P options
 
 Examples - 
