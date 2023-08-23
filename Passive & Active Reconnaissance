@@ -1,0 +1,151 @@
+-> PASSIVE RECON
+
+1. WHOIS : 
+	WHOIS server listens on TCP port 43 for incoming requests.
+	The domain registrar is responsible for maintaining the WHOIS records for the domain names it is leasing. 
+> whois DOMAIN_NAME		
+
+
+2. NSLOOKUP (Name Server Look Up) :
+	Can find the IP address of a domain name.
+> nslookup DOMAIN_NAME
+> nslookup OPTIONS DOMAIN_NAME SERVER
+	- OPTIONS contains the query type
+	- DOMAIN_NAME is the website domain we are looking up
+	- SERVER is the DNS server that you want to query
+
+DNS SERVERS - LOCAL ISP's DNS Server
+	    - Cloudflare - 1.1.1.1 and 1.0.0.1
+	    - Google - 8.8.8.8 and 8.8.4.4
+	    - Quad9 - 9.9.9.9 and 149.112.112.112
+QUERY TYPES - A		- IPv4 Addresses
+	    - AAAA	- IPv6 Addresses
+	    - CNAME	- Canonical Name
+	    - MX	- Mail Servers
+	    - SOA	- Start of Authority
+	    - TXT	- TXT Records
+
+> nslookup -type=A domain.com 1.1.1.1
+
+For Eg.
+> nslookup -type=MX domain.com 
+
+Sample Output- 
+
+domain.com	mail exchanger = 5 alt1.aspmx.l.google.com.
+domain.com	mail exchanger = 1 aspmx.l.google.com.
+domain.com	mail exchanger = 10 alt4.aspmx.l.google.com.
+domain.com	mail exchanger = 10 alt3.aspmx.l.google.com.
+domain.com	mail exchanger = 5 alt2.aspmx.l.google.com.
+
+	- Since MX is looking up the Mail Exchange servers, when a mail server tries to deliver email @domain.com, it will try to connect to the 
+	  aspmx.l.google.com, which has order 1. 
+	- If it is busy or unavailable, the mail server will attempt to connect to the next in order mail exchange servers, alt1.aspmx.l.google.com 
+	  or alt2.aspmx.l.google.com
+
+
+3. DIG (Domain Information Groper) : 
+	For more advanced DNS queries and additional functionality
+> dig DOMAIN_NAME
+> dig DOMAIN_NAME TYPE		# To specify record type
+> dig @SERVER DOMAIN_NAME TYPE	# To select the custom DNS server
+
+> dig @1.1.1.1 domain.com MX
+
+
+4. DNSDUMPSTER :
+	DNS lookup tools, such as nslookup and dig, cannot find subdomains on their own.
+	DNSDUMPSTER can find subdomains & other info for given DOMAIN_NAME.
+
+URL: https://dnsdumpster.com/
+
+
+5. DNSENUM :
+	A command line tool that can enumerate DNS Servers to find subdomains and other important info
+> dnsenum DOMAIN_NAME
+
+
+6. SHODAN.IO
+	Shodan.io tries to connect to every device reachable online to build a search engine of connected “things” in contrast with a search 
+	engine for web pages. Once it gets a response, it collects all the information related to the service and saves it in the database to 
+	make it searchable.
+	Can give information about the client’s network
+
+URL: https://shodan.io/
+
+
+
+
+
+
+-> ACTIVE RECON
+
+Involves direct connections made to the target machine. 
+Any such attempt might leave information in the logs showing the client IP address, time of the connection, and duration of the connection, among 
+other things.
+
+1. WEB BROWSER :
+	Inspect the Web application using Developer tools available in your Web Browser
+
+Add-ons for Firefox and Chrome that can help in penetration testing
+	a. FoxyProxy: Allows to quickly change the proxy server you are using to access the target website.
+		      Convenient extension when using Burp Suite or if you need to switch proxy servers regularly.
+	b. User-Agent Switcher and Manager: Gives the ability to pretend to be accessing the webpage from a different operating system or different 
+		      web browser.
+		      You can pretend to be browsing a site using an iPhone when in fact, you are accessing it from Mozilla Firefox. 
+	c. Wappalyzer: provides insights about the technologies used on the visited websites. 
+		      Handy Extension primarily when you collect all this information while browsing the website like any other user. 
+
+
+2. PING :
+	To check whether you can reach the remote system and that the remote system can reach you back.
+	Sends an ICMP Echo packet to a remote system. If the remote system is online, and the ping packet was correctly routed and not blocked by 
+	any firewall, the remote system should send back an ICMP Echo Reply.
+> ping HOST_NAME
+> ping IP_ADDRESS
+> ping -c 10 10.10.204.7    (Fot Windows > ping -m 10 10.10.204.7)	# Sends only 10 ICMP Packets
+
+
+3. TRACEROUTE :
+	Traces the route taken by the packets from your system to another host
+	Finds the IP addresses of the routers or hops that a packet traverses as it goes from source to destination host.
+> traceroute IP_ADDRESS	    (For Windows > tracert IP_ADDRESS)
+
+
+4. TELNET : 
+	Uses the TELNET protocol for remote administration at port 23. 
+	Sends all the data, including usernames and passwords, in cleartext.
+> telnet IP_ADDR PORT
+	> GET / HTTP/1.1	# will request default index page at /
+	> host: telnet		# To get a valid response, instead of an error, you need to input some value for the host 'host: example; and hit 
+				  enter twice. 
+
+5. NETCAT (NC) :
+	Netcat supports both TCP and UDP protocols. 
+> nc IP_ADDR PORT		# netcat to connect to IP_ADDR on port PORT
+
+	Netcat to listen on a TCP port and connect to a listening port on another system.
+> nc -vnlp PORT			# open a port and listen on it on receiving end
+	-l	Listen mode
+	-p	Specify the Port number
+	-n	Numeric only; no resolution of hostnames via DNS
+	-v	Verbose output (optional, yet useful to discover any bugs)
+	-vv	Very Verbose (optional)
+	-k	Keep listening after client disconnects
+NOTES:
+- The option -p should appear just before the port number you want to listen on.
+- The option -n will avoid DNS lookups and warnings.
+- Port numbers less than 1024 require root privileges to listen on.
+
+> nc RECEIVER_IP PORT		# on senders side to connect to nc listener 
+
+
+
+
+
+
+
+
+
+
+
