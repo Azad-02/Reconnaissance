@@ -120,6 +120,7 @@ COMMON EXAMPLES OF NMAP
 	-oN  : Normal output format into specified file
 
 
+> nmap -iL list_of_hosts.txt		# provide a file as input for your list of targets
 
 
 
