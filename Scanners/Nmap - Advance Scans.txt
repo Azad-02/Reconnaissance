@@ -1,0 +1,103 @@
+ADVANCE SCANS
+
+
+
+1. nmap -sT IP_ADDR		# TCP Connect Scan
+
+TCP 3-Way Handshake for TCP Connect Scan
+
+		------------ SYN -------------->
+CLIENT		<----------- SYN/ACK -----------		SERVER
+		------------ ACK -------------->
+		------------ RST/ACK ---------->
+
+- A closed TCP port responds to a SYN packet with RST/ACK to indicate that it is not open.
+- Open Ports reply with a SYN/ACK & Nmap completes the 3-way Handshake by sending an ACK.
+- Firewall might log the handshake attempt by attacker since it tries to make complete Handshake.
+
+
+
+2. nmap -sS IP_ADDR		# TCP SYN Scan
+
+TCP 3-Way handshake for TCP SYN Scan
+
+		------------- SYN ------------->
+CLIENT		<---------- SYN/ACK ------------		SERVER
+		------------- RST ------------->
+
+- Requires Privileged user (root or sudoer)
+- SYN scan does not complete the TCP 3-way handshake, instead, it blocks the connection once it receives a response (SYN/ACK) from the server.
+- Nmap sends an RST packet once a SYN/ACK packet is received.
+- It discovers the open ports successfully without fully establishing the TCP Connection.
+- Firewall can't log the handshake attempt by attacker since it doesn't make complete Handshake.
+
+
+
+3. nmap -sU IP_ADDR		# UDP Scan
+
+UDP Scan
+
+CLIENT		----------- UDP PCKT --------->			SERVER
+
+- Requires root privileges.
+- There is no gurantee that the service listening of UDP port will respond.
+- Closed UDP Port will respond with unreachable error (type 3(Destination Unreachable), code 3(Port Unreachable)).
+- Open ports won't respond back, thus Nmap will state them as Open.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+PERFORMANCE & FINE TUNING OF NMAP SCANS
+
+
+
+1. Specifying the ports
+
+- port list: 			-p22,80,443
+- port range: 			-p1-1023
+- all 65535 ports: 		-p-
+- most common 100 ports: 	-F	
+- most common 10 ports:		--top-ports 10
+
+
+
+2. Control Scan Timing
+
+- scan timing			-T<0-5>
+
+- paranoid			-T0 	# TO avoid IDS alerts. Scans one port, waits 5 mins to send next probe.
+- sneaky 			-T1	# often used during real-world engagements for stealth scans. For avoiding Firewalls.
+- polite 			-T2	# time-delay of 400 milleseconds. Unlikely to interfere with the target system.
+- normal 			-T3	# default Nmap Scan.
+- aggressive			-T4	# often used during CTFs & learning to scan practice targets.
+- insane 			-T5	# Most aggressive. Might affect accuracy of scan results due to increased likelihood of packet loss.
+
+- host timeout			--host-timeout 1m	# scan target for 1 minute before aborting
+				--host-timeout 60s	
+
+
+
+3. Control Packet Rate
+
+- Don't send more than 10 packets per Second		--max-rate 10 OR --max-rate=10
+- Send atleast 10 packets per second			--min-rate 10 OR --min-rate=10
+
+
+
+4. Control Probing Parallelism
+
+- Maintain atleast 512 probes in parallel		--min-parallelism 512 OR --min-parallelism=512
+- Maintain probes not more than 512 in parallel		--max-parallelism 512 OR --max-parallelism=512
+
+
+
+
+
+
+
+
+
+
+
+
