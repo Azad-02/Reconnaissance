@@ -225,11 +225,70 @@ NOTE: Spoofing only works in a minimal number of cases where certain conditions 
 FRAGMENTED PACKETS 
 
 
-1. nmap -f IP_ADDR		# Packet Fragmentation		
+> nmap -f IP_ADDR		# Packet Fragmentation		
 
 - -f option will fragment packet into 8 bytes or less
 - -ff OR -f -f option will fragment packet into 16 bytes
 - with --mtu option you can change default value of fragments, and must be multiple of 8
 
 - with --data-length <NUM> option, you can increase the size of your packets to make them look innocuous.
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+IDLE/ZOMBIE SCAN
+
+
+> nmap -sI ZOMBIE_IP MACHINE_IP		# ZOMBIE_IP is the IP to be spoofed & connected to the target network 
+
+- Spoofing the source IP Address can be great for Stealthier scans
+- Idle scan or zombie scan, requires an idle system connected to the network that you can communicate with.
+- Nmap will make each probe appear as if coming from the idle (zombie) host,then it will check for indicators whether the idle (zombie) host 
+  received any response to the spoofed probe.
+
+Steps to discover open ports using Zombie Scan:
+	- Trigger the idle host to respond so that you can record the current IP ID on the idle host.
+	- Send a SYN packet to a TCP port on the target. The packet should be spoofed to appear as if it was coming from the idle 
+	  host (zombie) IP address.
+	- Trigger the idle machine again to respond so that you can compare the new IP ID with the one received earlier.
+
+- Not useful if the “idle host” is busy, all the returned IP IDs would be useless.
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+GETTING MORE DETAILS, DETAILED OUTPUTS, DEBUGGING DETAILS
+
+
+--reason	# provide more details regarding Nmap's reasoning and conclusions.
+
+-v		# For more details/verbose output
+
+-vv		# For even more verbosity
+
+-d		# For debugging details
+
+-dd		# For even more debugged details
+
+
+
+
+
+
+
+
+
+
 
